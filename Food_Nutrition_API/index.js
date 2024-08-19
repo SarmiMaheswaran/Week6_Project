@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-const FoodItem = require('./models/FoodItem');
+const FoodItem = require('./models/Food_Items');
 
 const app = express();
 app.use(bodyParser.json());
@@ -18,7 +18,14 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/foodNutri
 });
 
 // CRUD operations...
-
+app.get('/food-items', async (req, res) => {
+    try {
+        const foodItems = await FoodItem.find();
+        res.json(foodItems);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
 // Export the Express app as a module
 module.exports = app;
 
